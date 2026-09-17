@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Protótipo para extração assistida e cálculo de índices econômico-financeiros do CRC." />
+    <title>Analisador Contábil · CAGEF</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a3756'/%3E%3Cpath d='M18 45V19h28v26z' fill='none' stroke='%23fff' stroke-width='4'/%3E%3Cpath d='M24 37l6-8 5 5 7-10' fill='none' stroke='%232ec4b6' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,650&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div>
+        <p class="eyebrow">Cadastro de fornecedores</p>
+        <h1>Analisador Contábil</h1>
+      </div>
+      <div class="prototype-pill">Protótipo</div>
+    </header>
+
+    <main class="workspace">
+      <aside class="sidebar">
+        <section class="upload-card" id="dropZone">
+          <div class="upload-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v4.5A1.5 1.5 0 006.5 20h11a1.5 1.5 0 001.5-1.5V14"/></svg>
+          </div>
+          <h2>Adicionar demonstração</h2>
+          <p>Selecione o balanço patrimonial ou as demonstrações contábeis em PDF.</p>
+          <label class="button primary" for="fileInput">Selecionar PDF</label>
+          <input id="fileInput" type="file" accept="application/pdf,.pdf" multiple />
+          <span class="drop-hint">ou arraste os arquivos para cá</span>
+        </section>
+
+        <button class="button sample" id="sampleButton" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h10l4 4v12H5zM14 4v5h5M8 13h8M8 17h6"/></svg>
+          Carregar exemplo validado
+        </button>
+
+        <div class="documents-heading">
+          <h2>Documentos desta análise</h2>
+          <span id="documentCount">0</span>
+        </div>
+        <div class="document-list" id="documentList">
+          <div class="no-documents">Nenhum documento adicionado.</div>
+        </div>
+      </aside>
+
+      <section class="content" id="content">
+        <div class="empty-state" id="emptyState">
+          <div class="empty-illustration" aria-hidden="true">
+            <div class="sheet"><i></i><i></i><i></i><b></b></div>
+          </div>
+          <p class="eyebrow">Conferência assistida</p>
+          <h2>Comece adicionando as demonstrações financeiras</h2>
+          <p>O sistema identifica as contas do balanço, calcula os três índices do CRC e sinaliza os campos que precisam de revisão.</p>
+          <button class="text-button" id="emptySample" type="button">Ver com o exemplo da ABNT</button>
+        </div>
+
+        <div class="analysis hidden" id="analysis">
+          <div class="analysis-header">
+            <div>
+              <p class="eyebrow" id="analysisYear">Exercício</p>
+              <h2 id="companyName">Empresa</h2>
+              <p class="identity" id="companyIdentity">CNPJ não identificado</p>
+            </div>
+            <div class="header-actions">
+              <button class="button secondary" id="printButton" type="button">Gerar relatório</button>
+            </div>
+          </div>
+
+          <div class="review-banner" id="reviewBanner">
+            <div class="status-icon" id="statusIcon" aria-hidden="true">!</div>
+            <div>
+              <strong id="reviewTitle">Revise os valores extraídos</strong>
+              <p id="reviewText">Confirme os dados antes de registrar os índices no CRC.</p>
+            </div>
+          </div>
+
+          <section class="metrics" aria-label="Índices calculados">
+            <article class="metric-card accent-blue">
+              <div class="metric-top"><span>LG</span><small>Liquidez Geral</small></div>
+              <output id="lgValue">—</output>
+              <p>(AC + RLP) ÷ (PC + PNC)</p>
+            </article>
+            <article class="metric-card accent-teal">
+              <div class="metric-top"><span>LC</span><small>Liquidez Corrente</small></div>
+              <output id="lcValue">—</output>
+              <p>AC ÷ PC</p>
+            </article>
+            <article class="metric-card accent-gold">
+              <div class="metric-top"><span>SG</span><small>Solvência Geral</small></div>
+              <output id="sgValue">—</output>
+              <p>AT ÷ (PC + PNC)</p>
+            </article>
+          </section>
+
+          <section class="source-panel">
+            <div class="panel-heading">
+              <div>
+                <h3>Valores usados no cálculo</h3>
+                <p>Campos alterados pelo analista são marcados como conferidos.</p>
+              </div>
+              <div class="scale-note" id="scaleNote">Valores em reais</div>
+            </div>
+
+            <div class="source-grid">
+              <label class="field">
+                <span>Ativo circulante <abbr title="Ativo Circulante">AC</abbr></span>
+                <div class="money-input"><span>R$</span><input inputmode="decimal" data-field="ac" /></div>
+              </label>
+              <label class="field">
+                <span>Realizável a longo prazo <abbr title="Realizável a Longo Prazo">RLP</abbr></span>
+                <div class="money-input"><span>R$</span><input inputmode="decimal" data-field="rlp" /></div>
+              </label>
+              <label class="field">
+                <span>Passivo circulante <abbr title="Passivo Circulante">PC</abbr></span>
+                <div class="money-input"><span>R$</span><input inputmode="decimal" data-field="pc" /></div>
+              </label>
+              <label class="field">
+                <span>Passivo não circulante <abbr title="Passivo Não Circulante">PNC</abbr></span>
+                <div class="money-input"><span>R$</span><input inputmode="decimal" data-field="pnc" /></div>
+              </label>
+              <label class="field wide">
+                <span>Ativo total <abbr title="Ativo Total">AT</abbr></span>
+                <div class="money-input"><span>R$</span><input inputmode="decimal" data-field="at" /></div>
+              </label>
+            </div>
+          </section>
+
+          <section class="audit-panel">
+            <div>
+              <p class="eyebrow">Rastreabilidade</p>
+              <h3 id="sourceFile">Documento analisado</h3>
+              <p id="sourceDetails">Aguardando documento.</p>
+            </div>
+            <div class="audit-chip" id="auditChip">Revisão pendente</div>
+          </section>
+
+          <p class="disclaimer">Resultado de apoio à análise. A conferência e a aprovação dos dados permanecem sob responsabilidade do analista.</p>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
