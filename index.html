@@ -108,27 +108,44 @@
             </div>
 
             <div class="source-grid">
-              <label class="field">
-                <span>Ativo circulante <abbr title="Ativo Circulante">AC</abbr></span>
-                <div class="money-input"><span>R$</span><input inputmode="decimal" data-field="ac" /></div>
-              </label>
-              <label class="field">
-                <span>Realizável a longo prazo <abbr title="Realizável a Longo Prazo">RLP</abbr></span>
-                <div class="money-input"><span>R$</span><input inputmode="decimal" data-field="rlp" /></div>
-              </label>
-              <label class="field">
-                <span>Passivo circulante <abbr title="Passivo Circulante">PC</abbr></span>
-                <div class="money-input"><span>R$</span><input inputmode="decimal" data-field="pc" /></div>
-              </label>
-              <label class="field">
-                <span>Passivo não circulante <abbr title="Passivo Não Circulante">PNC</abbr></span>
-                <div class="money-input"><span>R$</span><input inputmode="decimal" data-field="pnc" /></div>
-              </label>
-              <label class="field wide">
-                <span>Ativo total <abbr title="Ativo Total">AT</abbr></span>
-                <div class="money-input"><span>R$</span><input inputmode="decimal" data-field="at" /></div>
-              </label>
+              <div class="field">
+                <label for="value-ac">Ativo circulante <abbr title="Ativo Circulante">AC</abbr></label>
+                <div class="money-input"><span>R$</span><input id="value-ac" inputmode="decimal" data-field="ac" /></div>
+                <label class="page-input">Página física <input type="number" min="1" inputmode="numeric" data-page-field="ac" aria-label="Página do ativo circulante" /></label>
+              </div>
+              <div class="field">
+                <label for="value-rlp">Realizável a longo prazo <abbr title="Realizável a Longo Prazo">RLP</abbr></label>
+                <div class="money-input"><span>R$</span><input id="value-rlp" inputmode="decimal" data-field="rlp" /></div>
+                <label class="page-input">Página física <input type="number" min="1" inputmode="numeric" data-page-field="rlp" aria-label="Página do realizável a longo prazo" /></label>
+              </div>
+              <div class="field">
+                <label for="value-pc">Passivo circulante <abbr title="Passivo Circulante">PC</abbr></label>
+                <div class="money-input"><span>R$</span><input id="value-pc" inputmode="decimal" data-field="pc" /></div>
+                <label class="page-input">Página física <input type="number" min="1" inputmode="numeric" data-page-field="pc" aria-label="Página do passivo circulante" /></label>
+              </div>
+              <div class="field">
+                <label for="value-pnc">Passivo não circulante <abbr title="Passivo Não Circulante">PNC</abbr></label>
+                <div class="money-input"><span>R$</span><input id="value-pnc" inputmode="decimal" data-field="pnc" /></div>
+                <label class="page-input">Página física <input type="number" min="1" inputmode="numeric" data-page-field="pnc" aria-label="Página do passivo não circulante" /></label>
+              </div>
+              <div class="field wide">
+                <label for="value-at">Ativo total <abbr title="Ativo Total">AT</abbr></label>
+                <div class="money-input"><span>R$</span><input id="value-at" inputmode="decimal" data-field="at" /></div>
+                <label class="page-input">Página física <input type="number" min="1" inputmode="numeric" data-page-field="at" aria-label="Página do ativo total" /></label>
+              </div>
             </div>
+          </section>
+
+          <section class="memory-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Memória da análise</p>
+                <h3>Memória de cálculo e lastro documental</h3>
+                <p>A página indicada é a página física do arquivo PDF, independentemente da numeração impressa.</p>
+              </div>
+            </div>
+            <div class="memory-rows" id="memoryRows"></div>
+            <div class="formula-memory" id="formulaMemory"></div>
           </section>
 
           <section class="audit-panel">
@@ -146,6 +163,7 @@
     </main>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script type="module" src="app.js"></script>
   </body>
 </html>
