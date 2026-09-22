@@ -364,8 +364,9 @@ function extractValues(lines) {
 
 function looksLikeBalance(text) {
   const normalized = normalize(text).replace(/[^A-Z0-9\s]/g, " ");
-  return /BALAN[CS]O\s+PATRIMONIAL/.test(normalized) ||
-    (normalized.includes("ATIVO") && normalized.includes("PASSIVO") && /CIRCULANTE/.test(normalized));
+  return /BALAN.{0,30}PATRIM/.test(normalized) ||
+    (/AT.VO/.test(normalized) && /PASS.VO/.test(normalized) && /CIRCULANTE/.test(normalized)) ||
+    (/REALIZ.VEL.{0,20}LONGO PRAZO/.test(normalized) && /PATRIM.NIO LIQUIDO/.test(normalized));
 }
 
 async function ocrPdf(pdf, loading) {
@@ -388,7 +389,7 @@ async function ocrPdf(pdf, loading) {
       render();
       const page = await pdf.getPage(number);
       const base = page.getViewport({ scale: 1 });
-      const scale = Math.min(1.65, 1800 / base.width);
+      const scale = Math.min(2.2, 2300 / base.width);
       const viewport = page.getViewport({ scale });
       const canvas = document.createElement("canvas");
       canvas.width = Math.ceil(viewport.width);
